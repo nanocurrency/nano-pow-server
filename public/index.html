@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nano PoW Server</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/nano.png" sizes="32x32">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+  <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="http://momentjs.com/downloads/moment.min.js"></script>
+
+  <script type="module">
+
+    import App from '/app.js';
+    window.app = new App();
+
+    jQuery(() => {
+      window.app.init();
+    });
+
+  </script>
+
+</head>
+
+<body>
+
+
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a app-route class="navbar-brand" href="queue">Nano PoW Server</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li id="nav_page_home" class="nav-item active">
+          <a app-route class="nav-link" href="queue">Queue <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" target="_new" href="https://github.com/nanocurrency/nano-pow-server">Documentation</a>
+        </li>
+      </ul>
+
+      <!-- Spinner -->
+      <div id="app_spinner" class="lds-ellipsis d-none"><div></div><div></div><div></div><div></div></div>
+
+      <span id="status_network" class="badge badge-danger d-none">Server unavailable</span>&nbsp;
+
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          Actions
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a id="action_queue_clear" class="dropdown-item" href="#">Clear queue</a>
+          <a id="action_server_stop" class="dropdown-item" href="#">Stop server</a>
+        </div>
+      </div>
+
+
+    </div>
+  </nav>
+
+  <!-- Alert area for errors -->
+  <div id="app_alert_area" class="d-none alert alert-dismissible alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div id="app_alert_text">
+    </div>
+  </div>
+
+  <!-- Alert area for successful completions and other messages -->
+  <div id="app_success_area" class="d-none alert alert-dismissible alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div id="app_success_text">
+    </div>
+  </div>
+
+  <!-- SPA area -->
+  <div id="page_container">
+
+    <div id="page_queue" class="p-4 d-none">
+      <div class="row">
+        <h4>Work requests</h4>
+      </div>
+      <p>
+        <div class="row">
+
+          <div id="table_active_section" class="col-lg-12 panel panel-default">
+            <div class="panel-heading"><h5>Active</h5></div>
+            <div class="panel-body">
+              <div id="table_active_empty">No work requests are being processed right now<p></div>
+                <div id="table_active" class="disabled scrollable-table"></div>
+              </div>
+            </div>
+
+            <div id="table_queued_section" class="col-lg-12 panel panel-default">
+              <div class="panel-heading"><h5>Pending</h5></div>
+              <div class="panel-body">
+                <div id="table_queued_empty">No pending work requests<p></div>
+                  <div id="table_queued" class="disabled scrollable-table"></div>
+                </div>
+              </div>
+
+              <div id="table_completed_section" class="col-lg-12 panel panel-default">
+                <div class="panel-heading"><h5>Completed</h5>    <div id="status_avg_work" class="badge badge-light">
+                  <font size="2rem">Average work generation time is <span id="avg_work_value">0</span> ms</font>
+                </div><p></p>
+              </div>
+              <div class="panel-body">
+                <div id="table_completed_empty">No completed work requests<p></div>
+                  <div id="table_completed" class="disabled scrollable-table">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </body>
+      </html>

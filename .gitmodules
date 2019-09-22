@@ -1,0 +1,9 @@
+[submodule "deps/nano-pow"]
+	path = deps/nano-pow
+	url = https://github.com/nanocurrency/nano-pow.git
+[submodule "deps/cpptoml"]
+	path = deps/cpptoml
+	url = https://github.com/cryptocode/cpptoml.git
+[submodule "deps/spdlog"]
+	path = deps/spdlog
+	url = https://github.com/gabime/spdlog.git
