@@ -12,6 +12,12 @@ cmake .
 make
 ```
 
+On Windows, some flag may need to be passed:
+
+`-Dgtest_force_shared_crt=on` when building tests
+
+`-A "x64"` to pick the correct Boost libraries
+
 ### Validate installation
 
 ```
