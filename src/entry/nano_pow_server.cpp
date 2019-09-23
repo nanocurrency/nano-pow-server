@@ -106,7 +106,7 @@ int main (int argc, char * argv[])
 	ws.add_delete_endpoint ("/api/v1/work/queue", work_queue_delete_endpoint_handler);
 	ws.add_get_endpoint ("/api/v1/ping", ping_handler);
 	ws.add_get_endpoint ("/api/v1/stop", stop_handler);
-	ws.add_websocket_endpoint ("/api/v1/work", work_endpoint_handler_websockets);
+	ws.add_websocket_endpoint ("/websocket", work_endpoint_handler_websockets);
 
 	logger->info ("Nano PoW Server started");
 	ws.start (conf.server.bind_address, conf.server.port, conf.admin.doc_root);

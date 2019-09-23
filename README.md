@@ -99,7 +99,7 @@ While configuring devices is more convenient in the TOML file, a single device c
 
 ## API
 
-The API is available as REST requests, and all the POST requests are available as through WebSockets as well, in which case clients must provide a correlation id to match up the response. The WebSocket path is `ws://localhost:8076/api/v1/work`.
+The API is available as REST requests, and all the POST requests are available as through WebSockets as well, in which case clients must provide a correlation id to match up the response. The WebSocket path is `ws://localhost:8076/websocket`.
 
 ### Error responses
 
@@ -296,3 +296,8 @@ A sample UI is included in the distribution, available at http://localhost:8076
 
 Authentication and access control is beyond the scope of the Nano PoW Server. To expose functionality, consider using a reverse proxy; this can be used to control access to the REST, WebSocket and admin interfaces.
 
+A setup with certificates (enabling https:// and wss://) can be done fairly easy with Let's Encrypt and nginx. Here are some sample resources:
+
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
+
+https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-with-ssl-as-a-reverse-proxy-for-jenkins
