@@ -1,0 +1,20 @@
+{
+  "name": "nano-work-server-websocket-client",
+  "version": "1.0.0",
+  "description": "Sample WebSocket client for the Nano PoW server",
+  "main": "index.js",
+  "dependencies": {
+    "ws": "^7.1.2",
+    "reconnecting-websocket": "^4.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nanocurrency/nano-pow-server.git"
+  }
+}
