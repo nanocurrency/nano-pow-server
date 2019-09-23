@@ -307,3 +307,7 @@ A setup with certificates (enabling https:// and wss://) can be done fairly easy
 https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
 
 https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-with-ssl-as-a-reverse-proxy-for-jenkins
+
+A sample reverse proxy setup is available here:
+
+https://gist.github.com/cryptocode/c7d63216902615a06fea6e5c948960d2
