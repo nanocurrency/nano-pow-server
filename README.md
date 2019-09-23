@@ -4,7 +4,7 @@ This project is a standalone work server for [nano-pow](https://github.com/nanoc
 
 ## Installation
 
-CMake is used for building. C++14 and Boost 1.67 or later is required. Other dependencies are managed with git submodules:
+CMake is used for building. C++14 and Boost 1.67 or later is required, as well as an OpenCL SDK. Other dependencies are managed with git submodules:
 
 ```
 git clone --recursive https://github.com/nanocurrency/nano-pow-server.git
@@ -12,7 +12,7 @@ cmake .
 make
 ```
 
-On Windows, some flag may need to be passed:
+On Windows, some flag may need to be passed to cmake:
 
 `-Dgtest_force_shared_crt=on` when building tests
 

@@ -89,6 +89,7 @@ int main (int argc, char * argv[])
 	auto stop_handler = [&](std::string body, std::vector<std::string> args, std::shared_ptr<web::http_session> session) {
 		if (conf.server.allow_control)
 		{
+			logger->warn ("Server stopped via API");
 			session->write_json_response (R"({"success": true})");
 			std::exit (0);
 		}
