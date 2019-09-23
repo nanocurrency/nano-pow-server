@@ -254,7 +254,7 @@ void nano_pow_server::work_handler::handle_request_async (std::string body, std:
 
 						boost::property_tree::ptree response;
 
-						if (config.work.mock_work_generation_delay == 0)
+						if (this->config.work.mock_work_generation_delay == 0)
 						{
 							// TODO: use values from nano-pow / to_multiplier ()
 							job.result.work = u128 ("2feaeaa000000000");
@@ -264,7 +264,7 @@ void nano_pow_server::work_handler::handle_request_async (std::string body, std:
 						else
 						{
 							// Mock response for testing
-							std::this_thread::sleep_for (std::chrono::seconds (config.work.mock_work_generation_delay));
+							std::this_thread::sleep_for (std::chrono::seconds (this->config.work.mock_work_generation_delay));
 							job.result.work = u128 ("2feaeaa000000000");
 							job.result.difficulty = u128 ("0x2ffee0000000000");
 							job.result.multiplier = 1.3847;
