@@ -122,7 +122,7 @@ public:
 				dev.platform_id = dev_a->get_as<unsigned> ("platform").value_or (dev.platform_id);
 				dev.device_id = dev_a->get_as<unsigned> ("device").value_or (dev.device_id);
 				dev.threads = dev_a->get_as<unsigned> ("threads").value_or (dev.threads);
-				dev.memory = dev_a->get_as<unsigned> ("memory").value_or (dev.memory);
+				dev.memory = dev_a->get_as<uint64_t> ("memory").value_or (dev.memory);
 				std::string type_l (dev_a->get_as<std::string> ("type").value_or ("cpu"));
 				if (type_l == "cpu")
 				{
