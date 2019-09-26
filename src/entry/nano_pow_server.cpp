@@ -20,6 +20,7 @@ int main (int argc, char * argv[])
 	options.add_options () ("help", "Print out options");
 	options.add_options () ("config_path", boost::program_options::value<std::string> ()->default_value ("./nano-pow-server.toml"), "Path to the optional configuration file, including the file name");
 	options.add_options () ("config", boost::program_options::value<std::vector<std::string>> ()->multitoken (), "Pass configuration values. This takes precedence over any values in the configuration file. This option can be repeated multiple times.");
+	options.add_options () ("generate_config", "Write configuration to stdout, populated with commented defaults.");
 	boost::program_options::variables_map vm;
 	boost::program_options::store (boost::program_options::command_line_parser (argc, argv).options (options).allow_unregistered ().run (), vm);
 	boost::program_options::notify (vm);
@@ -28,6 +29,12 @@ int main (int argc, char * argv[])
 	if (vm.count ("help") != 0)
 	{
 		std::cout << options << std::endl;
+		std::exit (0);
+	}
+	if (vm.count ("generate_config"))
+	{
+		nano_pow_server::config conf;
+		std::cout << conf.export_documented () << std::endl;
 		std::exit (0);
 	}
 	if (vm.count ("config"))
@@ -55,6 +62,7 @@ int main (int argc, char * argv[])
 	// Configure work handler and web server
 	nano_pow_server::work_handler work_handler (conf, logger);
 	web::config web_conf;
+	web_conf.static_pages_allow = conf.admin.enable;
 	web_conf.static_pages_allow_remote = conf.admin.allow_remote;
 	web::webserver ws (web_conf, conf.server.threads);
 

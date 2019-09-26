@@ -44,6 +44,7 @@ class config
 {
 public:
 	bool static_pages_allow_remote{ false };
+	bool static_pages_allow{ true };
 };
 
 class http_session;
@@ -771,7 +772,7 @@ private:
 			}
 		}
 
-		if (!config_.static_pages_allow_remote && !remote_address.address ().is_loopback ())
+		if (!config_.static_pages_allow || (!config_.static_pages_allow_remote && !remote_address.address ().is_loopback ()))
 		{
 			return send (bad_request ("Access denied"));
 		}

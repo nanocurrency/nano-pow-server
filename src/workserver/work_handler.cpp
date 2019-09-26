@@ -26,7 +26,6 @@ nano_pow_server::work_handler::work_handler (nano_pow_server::config const & con
 {
 	for (auto device : config.devices)
 	{
-		uint64_t memory{ device.memory };
 		std::shared_ptr<nano_pow::driver> driver;
 		if (device.type == nano_pow_server::config::device::device_type::cpu)
 		{
@@ -36,6 +35,9 @@ nano_pow_server::work_handler::work_handler (nano_pow_server::config const & con
 		{
 			driver = std::make_shared<nano_pow::opencl_driver> ();
 		}
+
+		// Configuration is in MB
+		uint64_t memory{ device.memory * 1024 * 1024 };
 
 		// TOOD:
 		driver->memory_set (memory);
@@ -195,9 +197,14 @@ void nano_pow_server::work_handler::handle_request_async (std::string body, std:
 				job_l.request.difficulty = from_multiplier (multiplier, config.work.base_difficulty);
 			}
 
+			auto pri = request.get<unsigned> ("priority", 0);
 			if (config.server.allow_prioritization)
 			{
-				job_l.set_priority (request.get<unsigned> ("priority", 0));
+				job_l.set_priority (pri);
+			}
+			else if (pri > 0)
+			{
+				logger->info ("Priority field ignored as it's disabled (for root hash: {})", job_l.request.root_hash.to_hex ());
 			}
 
 			logger->info ("Work requested. Root hash: {}, difficulty: {}, priority: {}",
