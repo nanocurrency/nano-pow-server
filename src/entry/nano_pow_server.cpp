@@ -18,7 +18,7 @@ int main (int argc, char * argv[])
 {
 	boost::program_options::options_description options ("Command line options", 160);
 	options.add_options () ("help", "Print out options");
-	options.add_options () ("config_path", boost::program_options::value<std::string> ()->default_value ("./nano-pow-server.toml"), "Path to the optional configuration file, including the file name");
+	options.add_options () ("config_path", boost::program_options::value<std::string> ()->default_value ("./config-nano-pow-server.toml"), "Path to the optional configuration file, including the file name");
 	options.add_options () ("config", boost::program_options::value<std::vector<std::string>> ()->multitoken (), "Pass configuration values. This takes precedence over any values in the configuration file. This option can be repeated multiple times.");
 	boost::program_options::variables_map vm;
 	boost::program_options::store (boost::program_options::command_line_parser (argc, argv).options (options).allow_unregistered ().run (), vm);
