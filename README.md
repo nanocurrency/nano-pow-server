@@ -12,7 +12,7 @@ cmake .
 make
 ```
 
-On Windows, some flag may need to be passed to cmake:
+On Windows, some flags may need to be passed to cmake:
 
 `-Dgtest_force_shared_crt=on` when building tests
 
@@ -33,75 +33,17 @@ curl localhost:8076/api/v1/ping
 
 Defaults can be overriden by using a TOML config file, or by passing options through the `--config` command line option.
 
-**Note:** One or more CPU or GPU *work devices* must be configured.
+**Note:** One or more CPU or GPU work devices *must* be configured.
 
 #### Configuration file
 
-Minimal  `nano-pow-server.toml` adding a single device and using default values for everything else:
+To override defaults using a config file, create a file called `nano-pow-server.toml` and add the required keys and values under their respective TOML table. The file name can optionally be specified with the `--config_path` option (if not specified, the working directory is searched)
 
-```toml
-[device]
-type="gpu"
-platform=0
-device=1
-threads=1048576
-```
-
-Complete `nano-pow-server.toml` with two devices:
-
-```toml
-[server]
-# Listening address
-bind = "0.0.0.0"
-
-# Listening port for REST, WebSocket and the UI
-port = 8076
-
-# The maximum number of queued work requests. If the queue is full, work requests
-# will result in an error.
-request_limit = 16384
-
-# If true, log to standard error in addition to file
-log_to_stderr = false
-
-# If true, work requests may contain a numeric priority property to move ahead in the queue
-allow_prioritization = true
-
-# Certain REST requests requires this to be true, otherwise an error is returned
-allow_control = false
-
-[work]
-base_difficulty = "2000000000000000"
-
-# If non-zero, the server simulates generating work for N seconds.
-# instead of using a work device. Useful during testing of initial setup and debugging.
-mock_work_generation_delay = 0
-
-[[device]]
-type = "cpu"
-threads = 4
-
-# Maximum allocation, in bytes
-memory = 2147483648
-
-[[device]]
-type = "gpu"
-platform = 0
-device = 1
-threads = 1048576
-
-# Maximum allocation, in bytes
-memory = 4294967296
-
-[admin]
-# If true, static web pages are available remotely, otherwise only loopback
-allow_remote = false
-
-# Path to static pages
-path="public"
-```
+**A documented configuration file can be created with the --generate_config command**
 
 While configuring devices is more convenient in the TOML file, a single device can be configured via the command line using something like `--config device.type=\"cpu\" --config device.threads=4`
+
+Multiple devices can be added by placing several `[[device]]` entries in the config file.
 
 ## API
 
