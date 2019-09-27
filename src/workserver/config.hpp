@@ -167,6 +167,8 @@ public:
 			admin.allow_remote = admin_l->get_as<bool> ("allow_remote").value_or (admin.allow_remote);
 			admin.enable = admin_l->get_as<bool> ("enable").value_or (admin.enable);
 		}
+		// Parsing fails with an exception which is printed in main
+		std::cout << "Configuration loaded successfully" << std::endl;
 	}
 
 	/**
