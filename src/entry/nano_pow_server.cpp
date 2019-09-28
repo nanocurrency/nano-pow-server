@@ -5,6 +5,7 @@
 
 #include <nano_pow/cpp_driver.hpp>
 #include <nano_pow/opencl_driver.hpp>
+#include <spdlog/fmt/bundled/format.h>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -16,6 +17,12 @@
 
 int main (int argc, char * argv[])
 {
+	constexpr unsigned version_major = 1;
+	constexpr unsigned version_minor = 0;
+	constexpr unsigned version_patch = 0;
+	std::string version_string = fmt::format ("{}.{}.{}", version_major, version_minor, version_patch);
+	std::string version_string_full = fmt::format ("{}.{}.{}, Built {}", version_major, version_minor, version_patch, __DATE__);
+
 	boost::program_options::options_description options ("Command line options", 160);
 	options.add_options () ("help", "Print out options");
 	options.add_options () ("config_path", boost::program_options::value<std::string> ()->default_value ("./config-nano-pow-server.toml"), "Path to the optional configuration file, including the file name");
@@ -107,6 +114,10 @@ int main (int argc, char * argv[])
 		}
 	};
 
+	auto version_handler = [&](std::string body, std::vector<std::string> args, std::shared_ptr<web::http_session> session) {
+		session->write_json_response (fmt::format ("{{\"version\": \"{}\"}}", version_string));
+	};
+
 	// Clients should use the /api/v1/work endpoint, but POST requests to root is supported for
 	// compatibility with the legacy work server
 	ws.add_post_endpoint ("/", work_endpoint_handler);
@@ -115,9 +126,10 @@ int main (int argc, char * argv[])
 	ws.add_delete_endpoint ("/api/v1/work/queue", work_queue_delete_endpoint_handler);
 	ws.add_get_endpoint ("/api/v1/ping", ping_handler);
 	ws.add_get_endpoint ("/api/v1/stop", stop_handler);
+	ws.add_get_endpoint ("/api/v1/version", version_handler);
 	ws.add_websocket_endpoint ("/websocket", work_endpoint_handler_websockets);
 
-	logger->info ("Nano PoW Server started");
+	logger->info ("Nano PoW Server version {}", version_string_full);
 	ws.start (conf.server.bind_address, conf.server.port, conf.admin.doc_root);
 
 	return EXIT_SUCCESS;

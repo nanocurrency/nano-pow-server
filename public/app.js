@@ -15,10 +15,18 @@ export default class App {
     /** Set up click handlers and initialize components. This is called after
     the page is fully loaded. */
     init() {
-        console.log('Version', this.common.version);
+        console.log('Client version', this.common.version);
 
         $('#action_queue_clear').click(() => {
             this.queue.queue_clear();
+        });
+
+        // Show server version
+        $.getJSON("/api/v1/version", (data) => {
+            if (data.version) {
+                console.log('Server version', data.version);
+                $('#header_title').prop ("title", "Version " + data.version);
+            }
         });
 
         $('#action_server_stop').click(() => {
@@ -156,6 +164,6 @@ export default class App {
 export class Common {
     constructor(app) {
         this.app = app;
-        this.version = "1.0";
+        this.version = "1.0.0";
     }
 }
