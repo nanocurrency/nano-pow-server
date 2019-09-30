@@ -5,7 +5,6 @@
 
 #include <nano_pow/cpp_driver.hpp>
 #include <nano_pow/opencl_driver.hpp>
-#include <spdlog/fmt/bundled/format.h>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
