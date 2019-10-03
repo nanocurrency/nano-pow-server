@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/asio.hpp>
 #include <boost/filesystem.hpp>
 
 #include <fstream>
@@ -24,7 +25,7 @@ public:
 	{
 	public:
 		/** Web server/websocket listening address */
-		std::string bind_address{ "0.0.0.0" };
+		std::string bind_address{ boost::asio::ip::address_v6::loopback ().to_string () };
 		/** Web server/websocket listening port */
 		uint16_t port{ 8076 };
 		/** Number of web server IO threads. Since work generation is done asynchronously, a low thread count should suffice */
