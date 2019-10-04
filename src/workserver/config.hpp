@@ -89,7 +89,7 @@ public:
 	{
 	public:
 		std::string doc_root{ "public" };
-		bool enable{ true };
+		bool enable{ false };
 		bool allow_remote{ false };
 	} admin;
 
