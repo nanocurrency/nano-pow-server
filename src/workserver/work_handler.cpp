@@ -5,8 +5,6 @@
 #include <array>
 #include <thread>
 
-#include <nano_pow/cpp_driver.hpp>
-#include <nano_pow/opencl_driver.hpp>
 #include <workserver/work_handler.hpp>
 
 using uint128_t = boost::multiprecision::uint128_t;
@@ -332,10 +330,8 @@ void nano_pow_server::work_handler::handle_request_async (std::string body, std:
 				difficulty = from_multiplier (multiplier, config.work.base_difficulty);
 			}
 
-			std::array<uint64_t, 2> nonce{ hash.qwords[1], hash.qwords[0] };
-
-			// TODO: update to use full 128 bit work/difficulty when the nano_pow API is updated
-			bool passes (nano_pow::passes (nonce, work.qwords[0], difficulty.qwords[0]));
+			// TODO: update to use nano_pow::passes when the API is done
+			bool passes (true);
 
 			boost::property_tree::ptree response;
 			response.put ("valid", passes ? "1" : "0");

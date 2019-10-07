@@ -39,8 +39,6 @@ add_definitions(-DFMT_HEADER_ONLY)
 
 include_directories(deps/cpptoml/include)
 include_directories(deps/spdlog/include)
-include_directories (deps/nano-pow/include)
-add_subdirectory (deps/nano-pow)
 
 add_library (nano_pow_server_library
 	src/workserver/config.hpp
@@ -51,7 +49,6 @@ add_library (nano_pow_server_library
 	)
 target_link_libraries (nano_pow_server_library
 	PUBLIC
-		nano_pow
 		Boost::filesystem
 		Boost::program_options
 		Boost::boost
@@ -63,14 +60,14 @@ add_executable (nano_pow_server
 target_link_libraries (nano_pow_server
 	nano_pow_server_library)
 
-if (${NANO_POW_SERVER_TEST})
-	add_subdirectory (deps/nano-pow/googletest/googletest)
-	include_directories (deps/nano-pow/googletest/googletest/include)
-
-	add_executable (tests
-		src/entry/gtest.cpp
-		src/tests/work.cpp)
-	target_link_libraries (tests
-		nano_pow_server_library
-		gtest)
-endif ()
+#if (${NANO_POW_SERVER_TEST})
+#	add_subdirectory (deps/nano-pow/googletest/googletest)
+#	include_directories (deps/nano-pow/googletest/googletest/include)
+#
+#	add_executable (tests
+#		src/entry/gtest.cpp
+#		src/tests/work.cpp)
+#	target_link_libraries (tests
+#		nano_pow_server_library
+#		gtest)
+#endif ()
