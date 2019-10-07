@@ -17,10 +17,23 @@
 #include <sstream>
 #include <string>
 
-#include <nano_pow/driver.hpp>
 #include <spdlog/spdlog.h>
 #include <workserver/config.hpp>
 #include <workserver/util.hpp>
+
+// Mock types for the pow backend
+namespace nano_pow
+{
+	class driver
+	{
+	};
+	class cpp_driver : public driver
+	{
+	};
+	class opencl_driver : public driver
+	{
+	};
+}
 
 namespace nano_pow_server
 {
