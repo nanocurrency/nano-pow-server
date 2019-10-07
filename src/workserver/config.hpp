@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/asio.hpp>
 #include <boost/filesystem.hpp>
 
 #include <fstream>
@@ -24,7 +25,7 @@ public:
 	{
 	public:
 		/** Web server/websocket listening address */
-		std::string bind_address{ "0.0.0.0" };
+		std::string bind_address{ boost::asio::ip::address_v6::loopback ().to_string () };
 		/** Web server/websocket listening port */
 		uint16_t port{ 8076 };
 		/** Number of web server IO threads. Since work generation is done asynchronously, a low thread count should suffice */
@@ -88,7 +89,7 @@ public:
 	{
 	public:
 		std::string doc_root{ "public" };
-		bool enable{ true };
+		bool enable{ false };
 		bool allow_remote{ false };
 	} admin;
 
@@ -167,8 +168,6 @@ public:
 			admin.allow_remote = admin_l->get_as<bool> ("allow_remote").value_or (admin.allow_remote);
 			admin.enable = admin_l->get_as<bool> ("enable").value_or (admin.enable);
 		}
-		// Parsing fails with an exception which is printed in main
-		std::cout << "Configuration loaded successfully" << std::endl;
 	}
 
 	/**
@@ -223,6 +222,11 @@ public:
 		return ss_processed.str ();
 	}
 
+	bool config_file_exists (std::string const & toml_config_path) const
+	{
+		return boost::filesystem::exists (toml_config_path);
+	}
+
 private:
 	std::shared_ptr<cpptoml::table> tree;
 
@@ -235,23 +239,31 @@ private:
 
 	void read_config (std::string const & toml_config_path, std::vector<std::string> const & config_overrides = std::vector<std::string> ())
 	{
-		std::stringstream config_overrides_stream;
-		for (auto const & entry : config_overrides)
+		try
 		{
-			config_overrides_stream << entry << std::endl;
-		}
-		config_overrides_stream << std::endl;
+			std::stringstream config_overrides_stream;
+			for (auto const & entry : config_overrides)
+			{
+				config_overrides_stream << entry << std::endl;
+			}
+			config_overrides_stream << std::endl;
 
-		if (!toml_config_path.empty () && boost::filesystem::exists (toml_config_path))
-		{
-			std::ifstream input (toml_config_path);
-			tree = cpptoml::parse_base_and_override_files (config_overrides_stream, input, cpptoml::parser::merge_type::ignore, false);
+			if (!toml_config_path.empty () && boost::filesystem::exists (toml_config_path))
+			{
+				std::ifstream input (toml_config_path);
+				tree = cpptoml::parse_base_and_override_files (config_overrides_stream, input, cpptoml::parser::merge_type::ignore, false);
+			}
+			else
+			{
+				std::stringstream stream_empty;
+				stream_empty << std::endl;
+				tree = cpptoml::parse_base_and_override_files (config_overrides_stream, stream_empty, cpptoml::parser::merge_type::ignore, false);
+			}
 		}
-		else
+		catch (std::runtime_error const & err)
 		{
-			std::stringstream stream_empty;
-			stream_empty << std::endl;
-			tree = cpptoml::parse_base_and_override_files (config_overrides_stream, stream_empty, cpptoml::parser::merge_type::ignore, false);
+			auto parse_err = std::string ("TOML config error: ") + err.what ();
+			throw std::runtime_error (parse_err);
 		}
 	}
 };

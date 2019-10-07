@@ -24,7 +24,7 @@ export default class Queue {
         this.app.hide_alert();
 
         $.getJSON("/api/v1/work/queue", (data) => {
-            console.log(data);
+            // console.log(data);
             this.app.hide_spinner();
 
             if (Array.isArray(data.active) && data.active.length > 0) {

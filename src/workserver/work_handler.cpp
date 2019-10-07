@@ -36,12 +36,6 @@ nano_pow_server::work_handler::work_handler (nano_pow_server::config const & con
 			driver = std::make_shared<nano_pow::opencl_driver> ();
 		}
 
-		// Configuration is in MB
-		uint64_t memory{ device.memory * 1024 * 1024 };
-
-		// TOOD:
-		driver->memory_set (memory);
-
 		devices.emplace_back (device, driver);
 	}
 }
@@ -251,6 +245,7 @@ void nano_pow_server::work_handler::handle_request_async (std::string body, std:
 						// TODO: set difficulty when handling request once the nano-pow API is set
 						//       as well as set_memory based on request?
 						// driver->difficulty_set(nano_pow::reverse ((1ULL << 40) - 1));
+						// driver->memory_set (...);
 
 						// TODO: nano-pow API currently takes a 64 bit integer, same with the nonce
 

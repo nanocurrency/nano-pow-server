@@ -26,7 +26,7 @@ On Windows, some flags may need to be passed to cmake:
 
 ```
 curl localhost:8076/api/v1/ping
-{"success": true}
+{"success": "true"}
 ```
 
 ## Configuration
@@ -162,7 +162,7 @@ An informational error response is sent if the hash is not found.
 
 ### Ping
 
-This can be used by clients and tools, such as an web admin client, to check if the work server is available.
+This can be used by clients and tools to check if the work server is available.
 
 *URL* : `/api/v1/ping`
 
@@ -173,14 +173,31 @@ This can be used by clients and tools, such as an web admin client, to check if 
 ```json
 
 {
-  "success": true,
+  "success": "true",
+}
+```
+
+### Version
+
+This can be used by clients and tools to receive the server version number.
+
+*URL* : `/api/v1/version`
+
+*Method* : `GET`
+
+##### Response
+
+```json
+
+{
+  "version": "1.0.0",
 }
 ```
 
 ### Queue
 *Experimental: This endpoint may change or be removed in future versions without further notice*
 
-This can be used by clients and tools, such as an web admin client, to display the current work queue (pending, in progress and completed)
+This can be used by clients and tools to display the current work queue (pending, in progress and completed)
 
 *URL* : `/api/v1/work/queue`
 
@@ -207,7 +224,7 @@ This request requires `server.allow_control` to be set to true in the config.
 ```json
 
 {
-  "success": true,
+  "success": "true",
 }
 ```
 
@@ -215,7 +232,7 @@ An error is returned if control requests are not allowed.
 
 ### Stop
 
-This can be used by clients and tools, such as an web admin client, to stop the work server process.
+This can be used by clients and tools to stop the work server process.
 
 This request requires `server.allow_control` to be set to true in the config.
 
@@ -228,7 +245,7 @@ This request requires `server.allow_control` to be set to true in the config.
 ```json
 
 {
-  "success": true,
+  "success": "true",
 }
 ```
 
