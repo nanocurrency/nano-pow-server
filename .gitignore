@@ -1,0 +1,5 @@
+# prepared incomplete files
+*prep.sh
+.clang-format
+# ci build directory
+/build

@@ -9,25 +9,32 @@ set (NANO_POW_SERVER_TEST ON CACHE BOOL "")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if (WIN32)
+	add_definitions(-D_WIN32_WINNT=0x0600
+					-DWINVER=0x0600
+	)
+	add_definitions (-DBOOST_ALL_NO_LIB)
+	add_definitions(/bigobj)
+endif ()
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-if (APPLE)
-	set (PLATFORM_LINK_FLAGS "-framework OpenCL")
-	SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${PLATFORM_LINK_FLAGS}" )
-else ()
-	if (WIN32)
-		set (PLATFORM_LINK_FLAGS "")
-		add_definitions (-DBOOST_ALL_NO_LIB)
-		add_definitions(/bigobj)
-	else ()
-		set (PLATFORM_LINK_FLAGS "-static-libgcc -static-libstdc++")
-	endif ()
-	find_package (OpenCL REQUIRED)
-	include_directories (${OpenCL_INCLUDE_DIRS})
-	link_directories (${OpenCL_LIBRARY})
-endif ()
+#if (APPLE)
+#	set (PLATFORM_LINK_FLAGS "-framework OpenCL")
+#	SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${PLATFORM_LINK_FLAGS}" )
+#else ()
+#	if (WIN32)
+#		set (PLATFORM_LINK_FLAGS "")
+#		add_definitions (-DBOOST_ALL_NO_LIB)
+#		add_definitions(/bigobj)
+#	else ()
+#		set (PLATFORM_LINK_FLAGS "-static-libgcc -static-libstdc++")
+#	endif ()
+#	find_package (OpenCL REQUIRED)
+#	include_directories (${OpenCL_INCLUDE_DIRS})
+#	link_directories (${OpenCL_LIBRARY})
+#endif ()
 
 set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_MULTITHREADED      ON)
@@ -61,6 +68,17 @@ add_executable (nano_pow_server
 	src/entry/nano_pow_server.cpp)
 target_link_libraries (nano_pow_server
 	nano_pow_server_library)
+add_custom_command(TARGET nano_pow_server
+				   POST_BUILD
+				   COMMAND nano_pow_server --generate_config > ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample)
+
+install (TARGETS nano_pow_server
+		 RUNTIME DESTINATION .
+)
+install (FILES ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample DESTINATION .)
+
+set (CPACK_GENERATOR "TGZ")
+include (CPack)
 
 #if (${NANO_POW_SERVER_TEST})
 #	add_subdirectory (deps/nano-pow/googletest/googletest)
