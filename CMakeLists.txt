@@ -53,7 +53,9 @@ target_link_libraries (nano_pow_server_library
 		Boost::program_options
 		Boost::boost
 		Threads::Threads
-		${OpenCL_LIBRARY})
+		# Currently not used
+		#${OpenCL_LIBRARY}
+		)
 
 add_executable (nano_pow_server
 	src/entry/nano_pow_server.cpp)
