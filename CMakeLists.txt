@@ -76,6 +76,7 @@ install (TARGETS nano_pow_server
 		 RUNTIME DESTINATION .
 )
 install (FILES ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample DESTINATION .)
+install (DIRECTORY ${PROJECT_SOURCE_DIR}/public DESTINATION .)
 
 set (CPACK_GENERATOR "TGZ")
 include (CPack)
