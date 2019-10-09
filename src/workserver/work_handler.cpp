@@ -7,8 +7,6 @@
 
 #include <workserver/work_handler.hpp>
 
-using uint128_t = boost::multiprecision::uint128_t;
-using uint256_t = boost::multiprecision::uint256_t;
 std::atomic<unsigned> nano_pow_server::job::job_id_dispenser{ 1 };
 
 nano_pow_server::job::job ()
