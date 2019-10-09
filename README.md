@@ -1,10 +1,11 @@
 # Nano PoW Server
+[![Build Status](https://travis-ci.org/nanocurrency/nano-pow-server.svg)](https://travis-ci.org/nanocurrency/nano-pow-server)
 
 This project is a standalone work server for [nano-pow](https://github.com/nanocurrency/nano-pow), the proof-of-work algorithm used by Nano.
 
 ## Installation
 
-CMake is used for building. C++14 and Boost 1.67 or later is required, as well as an OpenCL SDK. Other dependencies are managed with git submodules:
+CMake is used for building. C++14 and Boost 1.67 or later is required. Other dependencies are managed with git submodules:
 
 ```
 git clone --recursive https://github.com/nanocurrency/nano-pow-server.git
@@ -40,6 +41,10 @@ Defaults can be overriden by using a TOML config file, or by passing options thr
 To override defaults using a config file, create a file called `nano-pow-server.toml` and add the required keys and values under their respective TOML table. The file name can optionally be specified with the `--config_path` option (if not specified, the working directory is searched)
 
 **A documented configuration file can be created with the --generate_config command**
+
+**A documented configuration file is created in the build root when the nano_pow_server target is created**
+
+**A documented configuration file is created with the `package` target**
 
 While configuring devices is more convenient in the TOML file, a single device can be configured via the command line using something like `--config device.type=\"cpu\" --config device.threads=4`
 
