@@ -72,11 +72,11 @@ target_link_libraries (nano_pow_server
 add_custom_command(TARGET nano_pow_server
 				   POST_BUILD
 				   COMMAND nano_pow_server --generate_config > ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample)
+install (FILES ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample DESTINATION .) # if you are installing you will want the sample either way.
 if (NANO_POW_STANDALONE)
 	install (TARGETS nano_pow_server
 			 RUNTIME DESTINATION .
 	)
-	install (FILES ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample DESTINATION .)
 	install (DIRECTORY ${PROJECT_SOURCE_DIR}/public DESTINATION .)
 	set (CPACK_GENERATOR "TGZ")
 	include (CPack)
