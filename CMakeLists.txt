@@ -5,7 +5,8 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif()
 
-set (NANO_POW_SERVER_TEST ON CACHE BOOL "")
+set (NANO_POW_SERVER_TEST OFF CACHE BOOL "")
+set (NANO_POW_STANDALONE OFF CACHE BOOL "")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -71,15 +72,15 @@ target_link_libraries (nano_pow_server
 add_custom_command(TARGET nano_pow_server
 				   POST_BUILD
 				   COMMAND nano_pow_server --generate_config > ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample)
-
-install (TARGETS nano_pow_server
-		 RUNTIME DESTINATION .
-)
-install (FILES ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample DESTINATION .)
-install (DIRECTORY ${PROJECT_SOURCE_DIR}/public DESTINATION .)
-
-set (CPACK_GENERATOR "TGZ")
-include (CPack)
+install (FILES ${PROJECT_BINARY_DIR}/config-nano-pow-server.toml.sample DESTINATION .) # if you are installing you will want the sample either way.
+if (NANO_POW_STANDALONE)
+	install (TARGETS nano_pow_server
+			 RUNTIME DESTINATION .
+	)
+	install (DIRECTORY ${PROJECT_SOURCE_DIR}/public DESTINATION .)
+	set (CPACK_GENERATOR "TGZ")
+	include (CPack)
+endif ()
 
 #if (${NANO_POW_SERVER_TEST})
 #	add_subdirectory (deps/nano-pow/googletest/googletest)
