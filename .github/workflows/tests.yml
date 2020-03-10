@@ -1,0 +1,39 @@
+name: Tests
+
+on: [push, pull_request]
+
+env:
+  BOOST_ROOT: /tmp/boost
+  ARTIFACT: 0
+
+jobs:
+  osx_job:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@722adc6
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+      - name: fetch boost
+        run: util/build_prep/bootstrap_boost.sh -m -c -B 1.70
+      - name: Build Artifact
+        run: ci/actions/build.sh
+
+  linux_job:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@722adc6
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+      - name: fetch boost
+        run: util/build_prep/bootstrap_boost.sh -m -B 1.70
+      - name: Build Artifact
+        run: ci/actions/build.sh  
+
+  windows_job:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@722adc6
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+      - name: Build Artifact
+        run: ci/actions/windows/build.ps1

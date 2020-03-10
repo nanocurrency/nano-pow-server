@@ -1,4 +1,14 @@
 cmake_minimum_required (VERSION 3.4)
+
+if (CMAKE_VERSION VERSION_GREATER 3.12 OR CMAKE_VERSION VERSION_EQUAL 3.12)
+	#find_package uses <PACKAGENAME>_ROOT variables
+	cmake_policy(SET CMP0074 NEW)
+endif()
+if (CMAKE_VERSION VERSION_GREATER 3.13 OR CMAKE_VERSION VERSION_EQUAL 3.13)
+	#option honors normal variables
+	cmake_policy(SET CMP0077 NEW)
+endif()
+
 project (nano_pow_server)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -82,14 +92,16 @@ if (NANO_POW_STANDALONE)
 	include (CPack)
 endif ()
 
-#if (${NANO_POW_SERVER_TEST})
-#	add_subdirectory (deps/nano-pow/googletest/googletest)
-#	include_directories (deps/nano-pow/googletest/googletest/include)
-#
-#	add_executable (tests
-#		src/entry/gtest.cpp
-#		src/tests/work.cpp)
-#	target_link_libraries (tests
-#		nano_pow_server_library
-#		gtest)
-#endif ()
+if (${NANO_POW_SERVER_TEST} AND ${NANO_POW_STANDALONE})
+	if (WIN32)
+		set(gtest_force_shared_crt ON)
+	endif()
+	add_subdirectory (deps/googletest/googletest)
+	include_directories (deps/googletest/googletest/include)
+	add_executable (tests
+		src/entry/gtest.cpp
+		src/tests/work.cpp)
+	target_link_libraries (tests
+		nano_pow_server_library
+		gtest)
+endif ()
