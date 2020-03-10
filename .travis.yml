@@ -41,7 +41,7 @@ jobs:
         - choco install -y boost-msvc-14.1
         - choco install -y awscli
       script:
-        - mkdir build; pushd build; cmake .. -G"Visual Studio 15 2017" -A"x64"; cmake --build . --target package --config Release -- -m:2; popd
+        - mkdir build; pushd build; cmake .. -DNANO_POW_STANDALONE=TRUE -G"Visual Studio 15 2017" -A"x64"; cmake --build . --target package --config Release -- -m:2; popd
         - if [[ $TRAVIS_PULL_REQUEST == false ]]; then ci/travis-deploy.sh; fi
 cache:
   - ccache: true
