@@ -3,6 +3,12 @@
 
 This project is a standalone work server for [nano-pow](https://github.com/nanocurrency/nano-pow), the proof-of-work algorithm used by Nano.
 
+## Download
+
+* [Linux](s3://repo.nano.org/pow-server/nano_pow_server-latest-Linux.tar.gz)
+* [Mac](s3://repo.nano.org/pow-server/nano_pow_server-latest-Darwin.tar.gz)
+* [Windows](s3://repo.nano.org/pow-server/nano_pow_server-latest-win64.tar.gz)
+
 ## Installation
 
 CMake is used for building. C++14 and Boost 1.67 or later is required. Other dependencies are managed with git submodules:

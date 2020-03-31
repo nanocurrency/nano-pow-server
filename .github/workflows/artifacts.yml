@@ -1,0 +1,71 @@
+name: Artifacts
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  BOOST_ROOT: /tmp/boost
+  ARTIFACT: 1
+
+jobs:
+  osx_job:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@722adc6
+      - uses: chrislennon/action-aws-cli@f0f8671
+      - name: tag
+        run: echo "::set-env name=TAG::`git log -1 --format=%h`"
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+      - name: fetch boost
+        run: util/build_prep/bootstrap_boost.sh -m -c -B 1.70
+      - name: Build Artifact
+        run: ci/actions/build.sh
+      - name: Deploy Artifact
+        run: ci/actions/deploy.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-2
+  
+  linux_job:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@722adc6
+      - uses: chrislennon/action-aws-cli@f0f8671
+      - name: tag
+        run: echo "::set-env name=TAG::`git log -1 --format=%h`"
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+      - name: fetch boost
+        run: util/build_prep/bootstrap_boost.sh -m -B 1.70
+      - name: Build Artifact
+        run: ci/actions/build.sh
+      - name: Deploy Artifact
+        run: ci/actions/deploy.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-2     
+
+  windows_job:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@722adc6
+      - uses: chrislennon/action-aws-cli@f0f8671
+      - name: tag
+        run: |
+          $TRAVIS_TAG=git log -1 --format=%h
+          echo "::set-env name=TAG::$TRAVIS_TAG"
+      - name: Checkout Submodules
+        run: git submodule update --init --recursive
+      - name: Build Artifact
+        run: ci/actions/windows/build.ps1
+      - name: Deploy Artifact
+        run: ci/actions/windows/deploy.ps1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-2
