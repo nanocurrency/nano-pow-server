@@ -9,6 +9,7 @@ else {
     $env:TESTS="ON"
 }
 
+$env:BOOST_ROOT = ${env:BOOST_ROOT_1_69_0}
 mkdir build
 Push-Location build
 

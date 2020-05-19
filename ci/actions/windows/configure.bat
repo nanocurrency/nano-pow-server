@@ -7,7 +7,9 @@ cmake .. ^
     -Ax64 ^
     -G"Visual Studio 16 2019" ^
     -DNANO_POW_STANDALONE=ON ^
-    -DNANO_POW_SERVER_TEST=%TESTS%
+    -DNANO_POW_SERVER_TEST=%TESTS% ^
+    -DBoost_NO_SYSTEM_PATHS=TRUE ^
+    -DBoost_NO_BOOST_CMAKE=TRUE 
 
 set exit_code=%errorlevel%
 if %exit_code% neq 0 goto exit

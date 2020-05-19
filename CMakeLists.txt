@@ -50,7 +50,7 @@ find_package(Threads REQUIRED)
 set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_MULTITHREADED      ON)
 
-find_package (Boost 1.67.0 REQUIRED COMPONENTS filesystem thread program_options system)
+find_package (Boost 1.69.0 REQUIRED COMPONENTS filesystem thread program_options system)
 include_directories (src)
 
 add_definitions(-DFMT_HEADER_ONLY)
