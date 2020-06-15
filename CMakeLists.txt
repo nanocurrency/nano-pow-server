@@ -17,6 +17,7 @@ endif()
 
 set (NANO_POW_SERVER_TEST OFF CACHE BOOL "")
 set (NANO_POW_STANDALONE OFF CACHE BOOL "")
+set (NANO_SHARED_BOOST OFF CACHE BOOL "")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -46,11 +47,14 @@ find_package(Threads REQUIRED)
 #	include_directories (${OpenCL_INCLUDE_DIRS})
 #	link_directories (${OpenCL_LIBRARY})
 #endif ()
+if (NANO_POW_STANDALONE)
+	if (NOT NANO_SHARED_BOOST)
+		set(Boost_USE_STATIC_LIBS        ON)
+		set(Boost_USE_MULTITHREADED      ON)
 
-set(Boost_USE_STATIC_LIBS        ON)
-set(Boost_USE_MULTITHREADED      ON)
-
-find_package (Boost 1.69.0 REQUIRED COMPONENTS filesystem thread program_options system)
+		find_package (Boost 1.69.0 REQUIRED COMPONENTS filesystem thread program_options system)
+	endif()
+endif ()
 include_directories (src)
 
 add_definitions(-DFMT_HEADER_ONLY)
