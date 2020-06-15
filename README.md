@@ -15,7 +15,8 @@ CMake is used for building. C++14 and Boost 1.69 or later is required. Other dep
 
 ```
 git clone --recursive https://github.com/nanocurrency/nano-pow-server.git
-cmake .
+cd nano-pow-server; mkdir build; cd build
+cmake -DNANO_POW_STANDALONE=ON ..
 make
 ```
 
