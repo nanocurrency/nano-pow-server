@@ -26,24 +26,24 @@ if [[ ${RUN} == "artifact" ]]; then
         cmake --build . \
             --target package \
             --config Release \
-            -- -j2
+            -- -j $(nproc)
     else
         sudo cmake --build . \
             --target package \
             --config Release \
-            -- -j2
+            -- -j $(nproc)
     fi
 else
     if [[ "$OS" == 'Linux' ]]; then
         cmake --build . \
             --target tests \
             --config Debug \
-            -- -j2
+            -- -j $(nproc)
     else
         sudo cmake --build . \
             --target tests \
             --config Debug \
-            -- -j2
+            -- -j $(nproc)
     fi
     ./tests
 fi
