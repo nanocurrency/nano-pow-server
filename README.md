@@ -1,3 +1,5 @@
+# WARNING: This project is defunct and archived.
+
 # Nano PoW Server
 [![Build Status](https://travis-ci.org/nanocurrency/nano-pow-server.svg)](https://travis-ci.org/nanocurrency/nano-pow-server)
 
